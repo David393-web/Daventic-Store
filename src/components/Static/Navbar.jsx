@@ -4,20 +4,9 @@ import { IoMdSearch } from "react-icons/io";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaCaretDown } from "react-icons/fa";
 import DarkMode from "./DarkMode";
+import { Link } from "react-router-dom";
 
-const Menu = [
-  { id: 1, name: "Home", link: "*/#" },
-  { id: 2, name: "Top Rated", link: "*/#services" },
-  { id: 3, name: "Kids Wear", link: "*/#" },
-  { id: 4, name: "Mens Wear", link: "*/#" },
-  { id: 5, name: "Electronics", link: "*/#" },
-];
 
-const DropdownLinks = [
-  { id: "1", name: "Trending Books", link: "*/#" },
-  { id: "2", name: "Best Selling", link: "*/#" },
-  { id: "3", name: "Authors", link: "*/#" },
-];
 
 const Navbar = () => {
   const [username, setUsername] = useState("");
@@ -33,7 +22,7 @@ const Navbar = () => {
     <div className="relative z-40 duration-200 bg-orange-200 shadow-md dark:bg-gray-900 dark:text-white">
       {/* Upper Navbar */}
       <div className="py-2 bg-primary/40">
-        <div className="container flex justify-between items-center">
+        <div className="container flex items-center justify-between">
           {/* Left - Logo */}
           <div className="flex items-center font-sans font-bold">
             <a href="#" className="flex gap-2 text-2xl font-bold sm:text-3xl">
@@ -81,16 +70,30 @@ const Navbar = () => {
       {/* Lower Navbar */}
       <div className="flex justify-center bg-white dark:bg-gray-800 dark:text-white">
         <ul className="items-center hidden gap-4 sm:flex">
-          {Menu.map((data) => (
-            <li key={data.id}>
-              <a
-                href={data.link}
-                className="inline-block px-4 duration-200 hover:text-primary"
-              >
-                {data.name}
-              </a>
-            </li>
-          ))}
+
+          <Link to="/"><li
+            className="inline-block px-4 duration-200 hover:text-primary"
+          >Home</li></Link>
+          <Link to="/src/pages/TopProducts/TopProducts.jsx">
+            <li
+              className="inline-block px-4 duration-200 hover:text-primary"
+            >Top Rated</li>
+          </Link>
+          <Link to="/src/pages/TopProducts/TopProducts.jsx">
+            <li
+              className="inline-block px-4 duration-200 hover:text-primary"
+            >Kids Wear</li>
+          </Link>
+          <Link to="/src/pages/TopProducts/TopProducts.jsx">
+            <li
+              className="inline-block px-4 duration-200 hover:text-primary"
+            >Mens Wear</li>
+          </Link>
+          <Link to="/src/pages/TopProducts/TopProducts.jsx">
+            <li
+              className="inline-block px-4 duration-200 hover:text-primary"
+            >Electronics</li>
+          </Link>
 
           {/* Dropdown Menu */}
           <li className="relative cursor-pointer group">
@@ -102,16 +105,15 @@ const Navbar = () => {
             </a>
             <div className="absolute z-[9999] hidden group-hover:block w-[150px] rounded-md bg-white dark:bg-gray-800 p-2 text-black dark:text-white shadow-md">
               <ul>
-                {DropdownLinks.map((data) => (
-                  <li key={data.id}>
-                    <a
-                      href={data.link}
-                      className="inline-block w-full p-2 transition duration-200 rounded-md hover:bg-orange-100 dark:hover:bg-orange-300/10"
-                    >
-                      {data.name}
-                    </a>
-                  </li>
-                ))}
+                <Link to="/src/pages/Products/products.jsx">
+                  <li>Trending Books</li>
+                </Link>
+                <Link to="/src/pages/Products/products.jsx">
+                  <li>Best Selling</li>
+                </Link>
+                <Link to="/src/pages/Products/products.jsx">
+                  <li>Authors</li>
+                </Link>
               </ul>
             </div>
           </li>

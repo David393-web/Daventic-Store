@@ -74,22 +74,22 @@ const Navbar = () => {
           <Link to="/"><li
             className="inline-block px-4 duration-200 hover:text-primary"
           >Home</li></Link>
-          <Link to="/src/pages/TopProducts/TopProducts.jsx">
+          <Link to="/TopProducts">
             <li
               className="inline-block px-4 duration-200 hover:text-primary"
             >Top Rated</li>
           </Link>
-          <Link to="/src/pages/TopProducts/TopProducts.jsx">
+          <Link to="/TopProducts">
             <li
               className="inline-block px-4 duration-200 hover:text-primary"
             >Kids Wear</li>
           </Link>
-          <Link to="/src/pages/TopProducts/TopProducts.jsx">
+          <Link to="/TopProducts">
             <li
               className="inline-block px-4 duration-200 hover:text-primary"
             >Mens Wear</li>
           </Link>
-          <Link to="/src/pages/TopProducts/TopProducts.jsx">
+          <Link to="/TopProducts">
             <li
               className="inline-block px-4 duration-200 hover:text-primary"
             >Electronics</li>
@@ -105,13 +105,13 @@ const Navbar = () => {
             </a>
             <div className="absolute z-[9999] hidden group-hover:block w-[150px] rounded-md bg-white dark:bg-gray-800 p-2 text-black dark:text-white shadow-md">
               <ul>
-                <Link to="/src/pages/Products/products.jsx">
+                <Link to="/Products">
                   <li>Trending Books</li>
                 </Link>
-                <Link to="/src/pages/Products/products.jsx">
+                <Link to="/Products">
                   <li>Best Selling</li>
                 </Link>
-                <Link to="/src/pages/Products/products.jsx">
+                <Link to="/Products">
                   <li>Authors</li>
                 </Link>
               </ul>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Echo!</title>
+    <style>
+        /* Universal client compatibility resets */
+        body { margin: 0; padding: 0; font-family: 'Inter', Arial, Helvetica, sans-serif; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; width: 100%; }
+        table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; display: block; } /* display: block helps prevent extra spacing */
+        a { text-decoration: none; }
+
+        /* Responsive styles for mobile */
+        @media only screen and (max-width: 600px) {
+            .full-width-mobile { width: 100% !important; min-width: 100% !important; }
+            .content-padding { padding: 20px !important; }
+            .header-text { font-size: 24px !important; }
+            .sub-header-text { font-size: 18px !important; }
+            .body-text { font-size: 15px !important; }
+            .button { padding: 10px 20px !important; font-size: 15px !important; }
+            .spacing-section { height: 20px !important; }
+        }
+    </style>
+</head>
+
+<body style="margin: 0; padding: 0; font-family: 'Inter', Arial, Helvetica, sans-serif; background-color: #f0f4f8; width: 100%;">
+    <!-- Outer container table for full width background -->
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0"
+        style="background-color: #f0f4f8; padding: 20px 0; width: 100%;">
+        <tr>
+            <td align="center" style="vertical-align: top;">
+                <!-- Main content wrapper table -->
+                <table role="presentation" class="full-width-mobile" width="600" cellspacing="0" cellpadding="0"
+                    style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); margin: 0 auto;">
+                    
+                    <!-- Top Branding/Logo Section -->
+                    <tr>
+                        <td style="background-color: #f97316; padding: 20px; text-align: center;">
+                            <!-- Placeholder for a simple text logo or small image logo -->
+                            <h2 style="color: #ffffff; font-size: 32px; margin: 0; font-weight: 900; letter-spacing: 1.5px;">E-Shop</h2>
+                            Or if you have a logo image:
+                            <img src="https://placehold.co/120x40/f97316/FFFFFF?text=E-Shop+Logo" alt="Echo Logo" width="120" height="40" style="display: block; margin: 0 auto;">
+                           
+                        </td>
+                    </tr>
+
+                    <!-- Header with Welcome Message -->
+                    <tr>
+                        <td style="background-color: #ff8a3d; padding: 25px 20px; text-align: center;">
+                            <h1 class="header-text" style="color: #ffffff; font-size: 32px; margin: 0; font-weight: bold; line-height: 1.2;">
+                                Welcome Aboard, <%= username %>!
+                            </h1>
+                            <p class="sub-header-text" style="color: #ffffff; font-size: 19px; margin: 10px 0 0; opacity: 0.9;">
+                                Your journey to amazing crafts begins! 🎉
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Body Content -->
+                    <tr>
+                        <td class="content-padding" style="padding: 30px; text-align: center; background-color: #ffffff;">
+                            <p class="body-text" style="font-size: 16px; color: #334155; margin: 0 0 20px; line-height: 1.6;">
+                                We're absolutely thrilled to have you join the Echo community.
+                                Get ready to explore a world of unique handmade crafts, local products, and incredible finds.
+                            </p>
+                            <p class="body-text" style="font-size: 16px; color: #334155; margin: 0 0 25px; line-height: 1.6;">
+                                Discover talented artisans, connect with other enthusiasts, and make the most of your shopping experience with us.
+                            </p>
+                            
+                            <!-- Call to Action Button -->
+                            <a href="https://yourwebsite.com/get-started"
+                                style="display: inline-block; background-color: #f97316; color: #ffffff; padding: 15px 30px; text-decoration: none; font-size: 18px; font-weight: bold; border-radius: 8px; margin: 20px 0; transition: background-color 0.3s ease; box-shadow: 0 5px 15px rgba(249, 115, 22, 0.4); text-align: center; white-space: nowrap;">
+                                Start Exploring Now
+                            </a>
+
+                            <p class="body-text" style="font-size: 14px; color: #64748b; margin: 25px 0 0; line-height: 1.5;">
+                                If you have any questions or need assistance, our dedicated support team
+                                is always here to help. Feel free to reply to this email!
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Spacing before footer -->
+                    <tr>
+                        <td class="spacing-section" height="30" style="background-color: #ffffff;"></td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #e2e8f0; padding: 20px; text-align: center; font-size: 12px; color: #64748b; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+                            <p style="margin: 0;">&copy; {new Date().getFullYear()} Echo!. All rights reserved.</p>
+                            <p style="margin: 10px 0 0;">
+                                <a href="https://yourwebsite.com/support"
+                                    style="color: #f97316; text-decoration: none; font-weight: bold;">Contact Support</a>
+                                |
+                                <a href="https://yourwebsite.com/privacy"
+                                    style="color: #f97316; text-decoration: none; font-weight: bold;">Privacy Policy</a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

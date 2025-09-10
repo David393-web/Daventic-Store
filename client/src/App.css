@@ -1,0 +1,97 @@
+// Import necessary dependencies and components
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux"; // Redux store provider
+import { PersistGate } from "redux-persist/integration/react"; // Keeps redux store persisted on reload
+
+// Pages
+import HomePage from "./pages/HomePage";
+import ShopPage from "./pages/ShopPage";
+import ProductDetail from "./pages/ProductDetail";
+import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import PrescriptionPage from "./pages/PrescriptionPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
+import FaqPage from "./pages/FaqPage";
+import TermsPage from "./pages/TermsPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import ReturnsPage from "./pages/ReturnsPage";
+import DisclaimerPage from "./pages/DisclaimerPage";
+import AccountPage from "./pages/AccountPage";
+import WishlistPage from "./pages/WishlistPage";
+import BrandPage from "./pages/BrandPage";
+import BlogPage from "./pages/BlogPage";
+
+// Components
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import WhatsAppButton from "./components/WhatsAppButton";
+import ScrollToTop from "./components/reuse/ScrollToTop";
+
+// Auth Pages
+import SignUp from "./pages/SiginUp";
+import LogInUser from "./pages/LogInUser";
+
+// Context and Redux store
+import { CartProvider } from "./context/CartContext";
+import { persistor, store } from "./redux/store";
+
+// Layout for regular pages: includes Header, Footer, and WhatsAppButton
+const MainLayout = ({ children }) => (
+  <div className="flex flex-col min-h-screen">
+    <Header />
+    <main className="flex-grow">{children}</main>
+    <Footer />
+    <WhatsAppButton />
+  </div>
+);
+
+// Layout for auth pages: excludes Header, Footer, WhatsAppButton
+const AuthLayout = ({ children }) => (
+  <div className="flex flex-col min-h-screen">
+    <main className="flex-grow">{children}</main>
+  </div>
+);
+
+function App() {
+  return (
+    // Wrap entire app with Redux Provider
+    <Provider store={store}>
+      {/* Persist Redux state across reloads */}
+      <PersistGate loading={null} persistor={persistor}>
+        <Router>
+          <ScrollToTop />
+          {/* Custom cart context for managing cart items */}
+          <CartProvider>
+            <Routes>
+              {/* Routes using MainLayout (with navbar/footer) */}
+              <Route path="/" element={<MainLayout><HomePage /></MainLayout>} />
+              <Route path="/shop" element={<MainLayout><ShopPage /></MainLayout>} />
+              <Route path="/products/:id" element={<MainLayout><ProductDetail /></MainLayout>} />
+              <Route path="/cart" element={<MainLayout><CartPage /></MainLayout>} />
+              <Route path="/checkout" element={<MainLayout><CheckoutPage /></MainLayout>} />
+              <Route path="/prescription" element={<MainLayout><PrescriptionPage /></MainLayout>} />
+              <Route path="/about" element={<MainLayout><AboutPage /></MainLayout>} />
+              <Route path="/contact" element={<MainLayout><ContactPage /></MainLayout>} />
+              <Route path="/faq" element={<MainLayout><FaqPage /></MainLayout>} />
+              <Route path="/brand" element={<MainLayout><BrandPage /></MainLayout>} />
+              <Route path="/terms" element={<MainLayout><TermsPage /></MainLayout>} />
+              <Route path="/privacy" element={<MainLayout><PrivacyPage /></MainLayout>} />
+              <Route path="/returns" element={<MainLayout><ReturnsPage /></MainLayout>} />
+              <Route path="/disclaimer" element={<MainLayout><DisclaimerPage /></MainLayout>} />
+              <Route path="/account" element={<MainLayout><AccountPage /></MainLayout>} />
+              <Route path="/wishlist" element={<MainLayout><WishlistPage /></MainLayout>} />
+              <Route path="/blog" element={<MainLayout><BlogPage /></MainLayout>} />
+
+              {/* Routes using AuthLayout (no navbar/footer) */}
+              <Route path="/sign-in" element={<AuthLayout><LogInUser /></AuthLayout>} />
+              <Route path="/sign-up" element={<AuthLayout><SignUp /></AuthLayout>} />
+            </Routes>
+          </CartProvider>
+        </Router>
+      </PersistGate>
+    </Provider>
+  );
+}
+
+export default App;

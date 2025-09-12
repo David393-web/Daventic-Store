@@ -1,0 +1,19 @@
+[phases.setup]
+commands = [
+  "npm install",          # Install backend dependencies
+  "npm run install-client" # Install frontend dependencies
+]
+
+[phases.build]
+commands = [
+  "npm run build-client"   # Build frontend
+]
+
+[phases.start]
+commands = [
+  "npm run start-all"      # Start backend and serve frontend
+]
+
+[env]
+PORT = "8080"
+NODE_ENV = "production"

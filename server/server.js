@@ -1,6 +1,7 @@
 require("dotenv").config(); // Load environment variables first
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
 
@@ -21,15 +22,23 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Default route
-app.get("/", (req, res) => {
-  res.send("Backend server is running!");
-});
-
 // API routes
 app.use("/api/v1", userRouter);
-app.use("/api/v1", profileRouter); 
+app.use("/api/v1", profileRouter);
 app.use("/api/v1", productRouter);
+
+// Serve React build
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/dist"))); // Vite build folder
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+  });
+} else {
+  // Default route for development
+  app.get("/", (req, res) => {
+    res.send("Backend server is running!");
+  });
+}
 
 // Error handler middleware
 app.use(errorHandler); // ✅ use your custom error handler properly

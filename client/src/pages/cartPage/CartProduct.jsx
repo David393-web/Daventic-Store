@@ -1,25 +1,24 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { removeItem, updateQuantity } from '../../Redux/slices/CartSlice'; // ✅ Ensure this path is correct
-
+import { removeFromCart, increaseQty, decreaseQty } from '../../redux/slices/cartSlice'; // ✅ Correct actions
 
 const CartProduct = ({ data }) => {
   const dispatch = useDispatch();
 
   const handleIncrease = () => {
     if (data.quantity < 10) {
-      dispatch(updateQuantity({ id: data.id, quantity: data.quantity + 1 }));
+      dispatch(increaseQty(data.id));
     }
   };
 
   const handleDecrease = () => {
     if (data.quantity > 1) {
-      dispatch(updateQuantity({ id: data.id, quantity: data.quantity - 1 }));
+      dispatch(decreaseQty(data.id));
     }
   };
 
   const handleRemove = () => {
-    dispatch(removeItem(data.id));
+    dispatch(removeFromCart(data.id));
   };
 
   return (

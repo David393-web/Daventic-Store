@@ -1,51 +1,98 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { FaShoppingCart, FaBoxOpen, FaHeart } from "react-icons/fa";
+// src/pages/UserDashboards/UserDashboard.jsx
+import React, { useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const BuyerDashboard = () => {
-  return (
-    <div className="min-h-screen p-6 bg-gray-50">
-      <motion.h1
-        className="mb-6 text-3xl font-bold text-gray-800"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        Buyer Dashboard
-      </motion.h1>
+import UserDashboardSidebar from "./UserDashboardSidebar";
+import UserHeader from "./UserHeader";
+import UserDashboardOverview from "./UserDashboardOverview";
+import UserDashboardOrders from "./UserDashboardOrders";
+import UserDashboardCart from "./UserDashboardCart";
+import UserDashboardProfile from "./UserDashboardProfile";
+import UserDashboardSettings from "./UserDashboardSettings";
+import NotFoundPage from "../NotFoundPage";
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {/* My Orders */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="flex flex-col items-center p-6 bg-white shadow-md rounded-2xl"
-        >
-          <FaBoxOpen size={40} className="mb-3 text-blue-500" />
-          <h2 className="text-lg font-semibold">My Orders</h2>
-          <p className="text-gray-500">Track your purchases</p>
-        </motion.div>
+const UserDashboard = ({ toggleDarkMode, isDarkMode }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-        {/* Wishlist */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="flex flex-col items-center p-6 bg-white shadow-md rounded-2xl"
-        >
-          <FaHeart size={40} className="mb-3 text-pink-500" />
-          <h2 className="text-lg font-semibold">Wishlist</h2>
-          <p className="text-gray-500">Save items you love</p>
-        </motion.div>
+  const user = useSelector((state) => state.auth?.user);
+  const isAuthenticated = useSelector((state) => state.auth?.isAuthenticated);
+  const rehydrated = useSelector((state) => state._persist?.rehydrated);
 
-        {/* Cart */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="flex flex-col items-center p-6 bg-white shadow-md rounded-2xl"
-        >
-          <FaShoppingCart size={40} className="mb-3 text-green-500" />
-          <h2 className="text-lg font-semibold">Cart</h2>
-          <p className="text-gray-500">View your shopping cart</p>
-        </motion.div>
+  const pathSegments = location.pathname.split("/");
+  const lastSegment = pathSegments[pathSegments.length - 1];
+  const activePath =
+    lastSegment === "dashboard" || lastSegment === "" ? "overview" : lastSegment;
+
+  useEffect(() => {
+    if (rehydrated) {
+      if (!isAuthenticated) {
+        toast.error("Please log in to access your dashboard.", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        navigate("/login", { replace: true });
+      } else if (user?.accountType !== "buyer") {
+        toast.error("Access Denied: You must be a buyer.", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        navigate("/", { replace: true });
+      }
+    }
+  }, [isAuthenticated, user, navigate, rehydrated]);
+
+  if (!rehydrated) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white bg-gray-900">
+        <p>Loading authentication status...</p>
       </div>
+    );
+  }
+
+  if (!isAuthenticated || user?.accountType !== "buyer") {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white bg-gray-900">
+        <p>Access Denied. Redirecting...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`flex flex-col lg:flex-row min-h-screen ${
+        isDarkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-900"
+      }`}
+    >
+      <ToastContainer />
+      <UserDashboardSidebar isDarkMode={isDarkMode} activePath={activePath} />
+
+      <main className="flex-1 overflow-auto">
+        <UserHeader isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+
+        <div className="p-4 lg:p-8">
+          <div
+            className={`p-6 rounded-lg shadow-md ${
+              isDarkMode ? "bg-gray-800" : "bg-white"
+            }`}
+          >
+            <Routes>
+              <Route path="/" element={<UserDashboardOverview />} />
+              <Route path="overview" element={<UserDashboardOverview />} />
+              <Route path="orders" element={<UserDashboardOrders />} />
+              <Route path="cart" element={<UserDashboardCart />} />
+              <Route path="profile" element={<UserDashboardProfile />} />
+              <Route path="settings" element={<UserDashboardSettings />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };
 
-export default BuyerDashboard;
+export default UserDashboard;

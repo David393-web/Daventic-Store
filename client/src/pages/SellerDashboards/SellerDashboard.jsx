@@ -1,6 +1,6 @@
 // src/pages/Dashboards/SellerDashboard.jsx
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation, Link, useParams } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -33,22 +33,21 @@ const SellerDashboard = ({ toggleDarkMode, isDarkMode }) => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  // Redux Persist Fix: Get rehydration status and user/auth info
-  const { user, isAuthenticated } = useSelector((state) => state.auth || {});
-  const rehydrated = useSelector((state) => state._persist?.rehydrated); // Use optional chaining for safety
+  // ✅ Fixed Redux selector warning: select values individually
+  const user = useSelector((state) => state.auth?.user);
+  const isAuthenticated = useSelector((state) => state.auth?.isAuthenticated);
+  const rehydrated = useSelector((state) => state._persist?.rehydrated);
 
   // Determine the active path for sidebar highlighting
   const pathSegments = location.pathname.split('/');
   const lastSegment = pathSegments[pathSegments.length - 1];
   const activePath = lastSegment === 'dashboard' || lastSegment === '' ? 'overview' : lastSegment;
 
-
   useEffect(() => {
     // Only perform redirect logic AFTER Redux Persist has rehydrated
     if (rehydrated) {
       if (!isAuthenticated) {
         toast.error("You need to log in to access the seller dashboard.", { position: "top-right", autoClose: 3000 });
-        // ✅ FIX: Redirect to the specific seller login page
         navigate('/seller-login', { replace: true });
       } else if (user?.accountType !== 'seller') {
         toast.error("Access Denied: You are not authorized as a seller.", { position: "top-right", autoClose: 3000 });
@@ -57,11 +56,10 @@ const SellerDashboard = ({ toggleDarkMode, isDarkMode }) => {
     }
   }, [isAuthenticated, user, navigate, rehydrated, dispatch]);
 
-
   // Loading state while Redux Persist is rehydrating
   if (!rehydrated) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+      <div className="flex items-center justify-center min-h-screen text-white bg-gray-900">
         <p>Loading authentication status...</p>
       </div>
     );
@@ -70,7 +68,7 @@ const SellerDashboard = ({ toggleDarkMode, isDarkMode }) => {
   // After rehydration, if not authenticated or not a seller, show redirecting and the useEffect will handle it
   if (!isAuthenticated || user?.accountType !== 'seller') {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+      <div className="flex items-center justify-center min-h-screen text-white bg-gray-900">
         <p>Access Denied. Redirecting...</p>
       </div>
     );
@@ -78,7 +76,7 @@ const SellerDashboard = ({ toggleDarkMode, isDarkMode }) => {
 
   return (
     <div className={`flex flex-col lg:flex-row min-h-screen ${isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900'}`}>
-        <ToastContainer />
+      <ToastContainer />
       {/* Sidebar */}
       <SellerDashboardSidebar isDarkMode={isDarkMode} activePath={activePath} />
 
@@ -105,7 +103,7 @@ const SellerDashboard = ({ toggleDarkMode, isDarkMode }) => {
             </Routes>
           </div>
         </div>
-        <Footer />
+        <Footer isDarkMode={isDarkMode} />
       </main>
     </div>
   );

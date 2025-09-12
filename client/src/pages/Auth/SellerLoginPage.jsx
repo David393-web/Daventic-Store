@@ -31,30 +31,28 @@ const SellerLoginPage = () => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      data.accountType = "vendor"; // attach accountType
-  
+      data.accountType = "seller";
+
       const response = await loginUserApi(data);
       if (!response.success) throw new Error(response.message || "Login failed");
-  
-      // Save user in Redux
-      dispatch(reduxLoginUser(response.user));
-  
-      toast.success("Login successful!", {
-        position: "top-right",
-        autoClose: 1000,
-        onClose: () => navigate("/Seller/dashboard"),
-      });
-  
+
+      // ✅ Correct payload shape for authSlice
+      dispatch(reduxLoginUser({
+        user: response.user,
+        token: response.token,
+      }));
+
+      toast.success("Login successful!", { autoClose: 1000 });
+      navigate("/seller/dashboard");
       reset();
     } catch (err) {
-      toast.error(err.message || "Login failed", {
-        position: "top-right",
-        autoClose: 3000,
-      });
+      toast.error(err.message || "Login failed", { autoClose: 3000 });
     } finally {
       setIsLoading(false);
     }
   };
+
+
 
   return (
     <div className="flex w-screen h-screen font-sans text-gray-800">
@@ -117,7 +115,7 @@ const SellerLoginPage = () => {
               />
               <button
                 type="button"
-                className="absolute right-2 top-8 text-gray-500 hover:text-gray-700"
+                className="absolute text-gray-500 right-2 top-8 hover:text-gray-700"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}

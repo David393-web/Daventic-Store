@@ -412,7 +412,7 @@ const loginUser = async (req, res) => {
 
     const token = jwt.sign(
       { userId: user._id, email: user.email, accountType: user.accountType },
-      process.env.JWT_ACCESS_SECRET,
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
@@ -447,6 +447,6 @@ module.exports = {
 
 // Debug test only
 const bcrypt = require("bcryptjs");
-const hash = "$2b$10$83NeKdhW3esTeW5dAndEy.xdodzRkUht1Hv5njCWMKDnzBDPZdMXe";
+const hash = "$2b$10$knOgm80woAlEEhX31yfJpeedrwfTxxj9wGZFFYsCG1e0NLLkswwE2";
 
 bcrypt.compare("Denyefa12@", hash).then(console.log);

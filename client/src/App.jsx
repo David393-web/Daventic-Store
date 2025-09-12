@@ -4,8 +4,9 @@ import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
 import { useDispatch, useSelector, Provider } from 'react-redux';
 // Redux import paths
 import { initializeSession } from './redux/slices/authSlice'; // Corrected path
-import { store, persistor } from './Redux/Store'; // Corrected path
+import { store, persistor } from "./redux/Store.js"; // Corrected path
 import { PersistGate } from 'redux-persist/integration/react';
+import PrivateRoute from "./components/PrivateRoute";
 
 // Layouts import paths
 import AuthLayout from './layouts/AuthLayout';
@@ -34,6 +35,14 @@ import Verifyotp from './components/userAuth/Verifyotp'
 // Dashboards (assuming they are in src/pages/Dashboards/)
 import SellerDashboard from './pages/SellerDashboards/SellerDashboard';
 import UserDashboard from './pages/Dashboards/UserDashboard'; // This is your Buyer Dashboard
+import SellerDashboardOrders from './pages/SellerDashboards/SellerDashboardOrders';
+import SellerDashboardProducts from './pages/SellerDashboards/SellerDashboardProducts';
+import SellerDashboardProfile from './pages/SellerDashboards/SellerDashboardProfile';
+import SellerDashboardSettings from './pages/SellerDashboards/SellerDashboardSettings';
+import SellerDashboardOverview from './pages/SellerDashboards/SellerDashboardOverview'; // Seller Overview
+import ProductForm from './pages/ProductPage/ProductForm'; // Assuming you have this
+
+// Not Found Page
 
 import NotFoundPage from './pages/NotFoundPage';
 
@@ -92,8 +101,65 @@ const AppContent = () => {
         <Route path="/welcomepage" element={<WelcomePage />} />
 
         {/* DASHBOARDS - Protected by logic within the component itself */}
-        <Route path="/seller/dashboard/*" element={<SellerDashboard toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
-        <Route path="/User/dashboard" element={<UserDashboard toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
+        <Route
+          path="/seller/dashboard/*"
+          element={
+            <PrivateRoute>
+              <SellerDashboard toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/user/dashboard/"
+          element={
+            <PrivateRoute>
+              <UserDashboard toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
+            </PrivateRoute>
+          }
+        />
+        {/* Nested routes within Seller Dashboard are handled inside SellerDashboard component */}
+        <Route  path="/seller/dashboard/orders" element={
+            <PrivateRoute>
+              <SellerDashboardOrders toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
+            </PrivateRoute>
+          }
+        />
+        <Route  path="/Seller/Dashboard/Products" element={
+            <PrivateRoute>
+              <SellerDashboardProducts toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
+            </PrivateRoute>
+          }
+        />
+        <Route  path="/Seller/Dashboard/Profile" element={
+            <PrivateRoute>
+              <SellerDashboardProfile toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
+            </PrivateRoute>
+          }
+        />
+        <Route  path="/Seller/Dashboard/Settings" element={
+            <PrivateRoute>
+              <SellerDashboardSettings toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
+            </PrivateRoute>
+          }
+        />
+        <Route  path="/Seller/Dashboard/Overview" element={
+            <PrivateRoute>
+              <SellerDashboardOverview toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
+            </PrivateRoute>
+          }
+        />
+        <Route  path="/seller/dashboard/add-product" element={
+            <PrivateRoute>
+              <ProductForm toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} action="add" />
+            </PrivateRoute>
+          }
+        />
+        <Route  path="/Seller/EditProduct/:productId" element={
+            <PrivateRoute>
+              <ProductForm toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} action="edit" />     
+            </PrivateRoute>
+          }
+        />
 
         {/* The "/post" link from Navbar now directs to the seller dashboard add product section */}
         {/* Note: If /post is outside seller dashboard, it might need additional auth/redirect logic */}

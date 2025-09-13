@@ -2,38 +2,38 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-// Import slices (make sure the paths & names match exactly)
-import authReducer from "../slices/authSlice.js";
-import cartReducer from "../slices/cartSlice.js"; // if you have this slice
-import productReducer from "../slices/productSlice.js"; // if you have this slice
-import orderReducer from "../slices/orderSlice.js"; // if you have this slice
+// ✅ Import slices (no .js extension needed)
+import authReducer from "./slices/authSlice";
+import cartReducer from "./slices/cartSlice";
+import productReducer from "./slices/productSlice";
+import orderReducer from "./slices/orderSlice";
 
-// Combine reducers
+// ✅ Combine reducers
 const rootReducer = combineReducers({
   auth: authReducer,
-  cart: cartReducer, // remove if you don’t have it yet
-  products: productReducer, // if you have this slice
+  cart: cartReducer,
+  products: productReducer,
   orders: orderReducer,
 });
 
-// Persist config
+// ✅ Persist config
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "products", "cart"], // ✅ persist auth + products
+  whitelist: ["auth", "cart", "products"], // persists auth + cart + products
 };
 
-// Persisted reducer
+// ✅ Persisted reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Create store
+// ✅ Store setup
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // ✅ needed for redux-persist
+      serializableCheck: false, // required for redux-persist
     }),
 });
 
-// Persistor
+// ✅ Persistor
 export const persistor = persistStore(store);

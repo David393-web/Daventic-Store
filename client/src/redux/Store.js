@@ -3,10 +3,10 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 // Import slices (make sure the paths & names match exactly)
-import authReducer from "./slices/authSlice.js";
-import cartReducer from "./slices/cartSlice.js"; // if you have this slice
-import productReducer from "./slices/productSlice.js"; // if you have this slice
-import orderReducer from "./slices/orderSlice.js"; // if you have this slice
+import authReducer from "../slices/authSlice.js";
+import cartReducer from "../slices/cartSlice.js"; // if you have this slice
+import productReducer from "../slices/productSlice.js"; // if you have this slice
+import orderReducer from "../slices/orderSlice.js"; // if you have this slice
 
 // Combine reducers
 const rootReducer = combineReducers({

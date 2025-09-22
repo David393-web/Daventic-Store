@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // Backend base URL — MUST match server.js setup
-const API_BASE_URL =  "https://11cf5add180d.ngrok-free.app/api/v1";
+const API_BASE_URL =  "http://localhost:5000/api/v1";
 
 
 // Axios instance

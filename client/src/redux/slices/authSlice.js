@@ -1,4 +1,4 @@
-// src/Redux/slices/authSlice.js
+// src/redux/slices/authSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -13,13 +13,21 @@ const authSlice = createSlice({
   reducers: {
     /**
      * Reducer to handle user login.
-     * Sets the user data, token, and isAuthenticated flag to true.
-     * Expected payload: { user: { id, email, name, accountType }, token: '...' }
+     * Accepts either:
+     * - { user: { ... }, token: "..." }
+     * - or just user object if no token is sent
      */
     loginUser: (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.isAuthenticated = true; // ✅ user is now logged in
+      if (action.payload.user) {
+        // case: { user, token }
+        state.user = action.payload.user;
+        state.token = action.payload.token || null;
+      } else {
+        // case: just user object
+        state.user = action.payload;
+        state.token = null;
+      }
+      state.isAuthenticated = true; // ✅ mark logged in
     },
 
     /**
@@ -29,7 +37,7 @@ const authSlice = createSlice({
     logoutUser: (state) => {
       state.user = null;
       state.token = null;
-      state.isAuthenticated = false; // ✅ user logged out
+      state.isAuthenticated = false;
     },
 
     /**
@@ -44,7 +52,6 @@ const authSlice = createSlice({
 
     /**
      * Initialize session after rehydration (used with redux-persist).
-     * Usually no explicit logic here because redux-persist rehydrates state.
      */
     initializeSession: (state) => {
       // Left intentionally blank — redux-persist will handle state rehydration

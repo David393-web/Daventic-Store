@@ -138,13 +138,13 @@ const ProductForm = ({ isDarkMode, action }) => {
       {/* Back Button */}
       <button
         onClick={() => navigate('/seller/dashboard')}
-        className="flex items-center mb-4 text-blue-600 hover:underline"
+        className="flex items-center mb-4 text-white hover:underline"
       >
         <ArrowLeft size={20} className="mr-2" /> Back to Dashboard
       </button>
 
       <h2 className="flex items-center mb-4 text-2xl font-bold">
-        <PlusCircle size={24} className="mr-3 text-blue-600" /> {action === 'add' ? 'Add New Product' : 'Edit Product'}
+        <PlusCircle size={24} className="mr-3 text-white" /> {action === 'add' ? 'Add New Product' : 'Edit Product'}
       </h2>
       <p className="mb-6 text-black dark:text-gray-300">
         Fill out the form below to {action === 'add' ? 'list a new product' : 'update this product'} for sale.
@@ -155,7 +155,7 @@ const ProductForm = ({ isDarkMode, action }) => {
           <label className="block mb-1 text-sm font-medium text-black dark:text-gray-300">Product Name</label>
           <input
             type="text"
-            className="w-full p-3 border rounded-md dark:bg-black dark:border-gray-600 dark:text-black focus:outline-none focus:ring-2 focus:ring-blue-600"
+            className="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600"
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
             required
@@ -163,7 +163,7 @@ const ProductForm = ({ isDarkMode, action }) => {
         </div>
 
         <div>
-          <label className="block mb-1 text-sm font-medium text-black dark:text-black">Description</label>
+          <label className="block mb-1 text-sm font-medium text-white dark:text-white">Description</label>
           <textarea
             rows="4"
             className="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -190,7 +190,7 @@ const ProductForm = ({ isDarkMode, action }) => {
           <input
             type="number"
             step="0.01"
-            className="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600"
             value={productPrice}
             onChange={(e) => setProductPrice(e.target.value)}
             required
@@ -205,7 +205,7 @@ const ProductForm = ({ isDarkMode, action }) => {
             accept="image/*"
             multiple
             onChange={handleImageChange}
-            className="w-full mb-2"
+            className="w-full mb-2 rounded-md cursor-pointer text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 "
           />
 
           <DragDropContext onDragEnd={handleDragEnd}>
@@ -249,7 +249,7 @@ const ProductForm = ({ isDarkMode, action }) => {
 
         <button
           type="submit"
-          className="w-full py-3 font-semibold text-white transition-colors duration-300 bg-blue-600 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="w-full py-3 font-semibold text-white transition-colors duration-300 bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-600"
         >
           {action === 'add' ? 'Add Product' : 'Update Product'}
         </button>

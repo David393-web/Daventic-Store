@@ -26,7 +26,7 @@ const SellerHeader = ({ isDarkMode, toggleDarkMode }) => {
               placeholder="Search dashboard..."
               className={`pl-10 pr-4 py-2 rounded-full outline-none transition-all duration-200
                 ${isDarkMode ? 'bg-gray-700 border border-gray-600 text-white placeholder-gray-400' : 'bg-gray-100 border border-gray-300 text-gray-900 placeholder-gray-500'}
-                focus:ring-2 focus:ring-orange-500 w-48
+                focus:ring-2 focus:ring-blue-600 w-48
               `}
             />
           </div>

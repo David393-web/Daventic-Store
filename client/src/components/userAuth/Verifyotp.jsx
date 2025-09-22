@@ -22,12 +22,11 @@ const Verifyotp = () => {
     }
   }, [email, navigate]);
 
-  const handleVerifyOtp = async (e) => {
+const handleVerifyOtp = async (e) => {
   e.preventDefault();
   if (!email || otp.length !== 6) return;
 
   setIsLoading(true);
-  console.log("Verifying OTP with email:", email, "OTP:", otp);
 
   try {
     const response = await verifyOtp({ email, otp });
@@ -35,18 +34,16 @@ const Verifyotp = () => {
 
     toast.success(response?.message || "OTP verified successfully");
 
-    // ✅ Save token + user in localStorage
-    localStorage.setItem("token", response?.token);
-    localStorage.setItem("user", JSON.stringify(response?.user));
-
-    // ✅ Redirect based on accountType
-    const accountType = response?.user?.accountType;
-    if (accountType === "seller") {
-      navigate("/seller/dashboard");
-    } else {
-      navigate("/user/dashboard");
+    // Save only if token + user exists
+    if (response?.token && response?.user) {
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
     }
 
+    // Use backend redirect
+    if (response?.redirectTo) {
+      navigate(response.redirectTo);
+    }
   } catch (error) {
     console.error("OTP verification failed:", error.response?.data || error.message);
     toast.error(
@@ -56,6 +53,8 @@ const Verifyotp = () => {
     setIsLoading(false);
   }
 };
+
+
 
 
 

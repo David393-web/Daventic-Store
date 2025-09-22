@@ -1,74 +1,65 @@
 // src/App.jsx
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom';
-import { useDispatch, useSelector, Provider } from 'react-redux';
-// Redux import paths
-import { initializeSession } from './redux/slices/authSlice'; // Corrected path
-import { store, persistor } from "./redux/Store.js"; // Corrected path
-import { PersistGate } from 'redux-persist/integration/react';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useDispatch, Provider } from "react-redux";
+import { initializeSession } from "./redux/slices/authSlice";
+import { store, persistor } from "./redux/Store.js";
+import { PersistGate } from "redux-persist/integration/react";
 import PrivateRoute from "./components/PrivateRoute";
 
-// Layouts import paths
-import AuthLayout from './layouts/AuthLayout';
+// Layouts
+import AuthLayout from "./layouts/AuthLayout";
 
-// Pages and Component import paths (assuming these exist and are in correct locations)
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-
-import ProductListingPage from './pages/ProductPage/ProductListingPage';
-import ProductDetailPage from './pages/ProductPage/ProductDetailPage';
-import CartPage from './pages/CartPage/Cart';
-import CheckoutPage from './pages/CartPage/CheckoutPage';
+// Shared Components
+import NotFoundPage from "./pages/NotFoundPage";
+import LoadingScreen from "./layouts/LoadingScreen";
 
 // Auth Pages
-import LoadingScreen from './layouts/LoadingScreen'; // ✅ LoadingScreen import
-import RoleSelectionPage from './pages/Auth/RoleSelectionPage'; // ✅ RoleSelectionPage import
-import BuyerLoginPage from './pages/Auth/LoginPage';
-import SellerLoginPage from './pages/Auth/SellerLoginPage';
-import BuyerSignupPage from './pages/Auth/SignupPage';
-import SellerSignupPage from './pages/Auth/SellerSignupPage';
-import WelcomePage from './components/userAuth/WelcomePage'; // ✅ WelcomePage import
-import ForgotPasswordPage from './components/userAuth/ForgotPassword'; // Assuming you have this
-import ResetPasswordPage from './components/userAuth/ResetPasswordPage'; // Assuming you have this
-import Verifyotp from './components/userAuth/Verifyotp'
+import RoleSelectionPage from "./pages/Auth/RoleSelectionPage";
+import BuyerLoginPage from "./pages/Auth/LoginPage";
+import SellerLoginPage from "./pages/Auth/SellerLoginPage";
+import BuyerSignupPage from "./pages/Auth/SignupPage";
+import SellerSignupPage from "./pages/Auth/SellerSignupPage";
+import WelcomePage from "./components/userAuth/WelcomePage";
+import ForgotPasswordPage from "./components/userAuth/ForgotPassword";
+import ResetPasswordPage from "./components/userAuth/ResetPasswordPage";
+import Verifyotp from "./components/userAuth/Verifyotp";
 
-// Dashboards (assuming they are in src/pages/Dashboards/)
-import SellerDashboard from './pages/SellerDashboards/SellerDashboard';
-import UserDashboard from './pages/Dashboards/UserDashboard'; // This is your Buyer Dashboard
-import SellerDashboardOrders from './pages/SellerDashboards/SellerDashboardOrders';
-import SellerDashboardProducts from './pages/SellerDashboards/SellerDashboardProducts';
-import SellerDashboardProfile from './pages/SellerDashboards/SellerDashboardProfile';
-import SellerDashboardSettings from './pages/SellerDashboards/SellerDashboardSettings';
-import SellerDashboardOverview from './pages/SellerDashboards/SellerDashboardOverview'; // Seller Overview
-import ProductForm from './pages/ProductPage/ProductForm'; // Assuming you have this
+// Product Pages
+import ProductListingPage from "./pages/ProductPage/ProductListingPage";
+import ProductDetailPage from "./pages/ProductPage/ProductDetailPage";
+import CartPage from "./pages/CartPage/Cart";
+import CheckoutPage from "./pages/CartPage/CheckoutPage";
+import ProductForm from "./pages/ProductPage/ProductForm";
 
-// Not Found Page
-
-import NotFoundPage from './pages/NotFoundPage';
-
+// Dashboards
+import SellerDashboard from "./pages/SellerDashboards/SellerDashboard";
+import UserDashboard from "./pages/Dashboards/UserDashboard";
+import SellerDashboardOverview from "./pages/SellerDashboards/SellerDashboardOverview";
+import SellerDashboardProducts from "./pages/SellerDashboards/SellerDashboardProducts";
+import SellerDashboardOrders from "./pages/SellerDashboards/SellerDashboardOrders";
+import SellerDashboardProfile from "./pages/SellerDashboards/SellerDashboardProfile";
+import SellerDashboardSettings from "./pages/SellerDashboards/SellerDashboardSettings";
 
 const AppContent = () => {
   const dispatch = useDispatch();
-
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedMode = localStorage.getItem('theme');
-    return savedMode === 'dark' ? true : false;
+    const savedMode = localStorage.getItem("theme");
+    return savedMode === "dark";
   });
 
   useEffect(() => {
     const html = document.documentElement;
     if (isDarkMode) {
-      html.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
+      html.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else {
-      html.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+      html.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
   }, [isDarkMode]);
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(prevMode => !prevMode);
-  };
+  const toggleDarkMode = () => setIsDarkMode((prevMode) => !prevMode);
 
   useEffect(() => {
     dispatch(initializeSession());
@@ -77,109 +68,69 @@ const AppContent = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Root path directs to RoleSelectionPage as the first step */}
+        {/* Root + Auth */}
         <Route path="/" element={<LoadingScreen />} />
         <Route path="/RoleSelectionPage" element={<RoleSelectionPage />} />
+        <Route path="/login" element={<AuthLayout><BuyerLoginPage /></AuthLayout>} />
+        <Route path="/seller-login" element={<AuthLayout><SellerLoginPage /></AuthLayout>} />
+        <Route path="/signup" element={<AuthLayout><BuyerSignupPage /></AuthLayout>} />
+        <Route path="/seller-signup" element={<AuthLayout><SellerSignupPage /></AuthLayout>} />
+        <Route path="/forgot-password" element={<AuthLayout><ForgotPasswordPage /></AuthLayout>} />
+        <Route path="/reset-password" element={<AuthLayout><ResetPasswordPage /></AuthLayout>} />
+        <Route path="/verify-otp" element={<AuthLayout><Verifyotp /></AuthLayout>} />
+        <Route path="/welcomepage" element={<WelcomePage />} />
 
-
-        {/* Product and Cart Pages */}
+        {/* Products + Cart */}
         <Route path="/products" element={<ProductListingPage toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
         <Route path="/products/:productId" element={<ProductDetailPage toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
         <Route path="/cart" element={<CartPage toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
         <Route path="/checkout" element={<CheckoutPage toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
 
-        {/* AUTHENTICATION PAGES */}
-        <Route path="/login" element={<AuthLayout toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode}><BuyerLoginPage /></AuthLayout>} />
-        <Route path="/seller-login" element={<AuthLayout toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode}><SellerLoginPage /></AuthLayout>} />
-        <Route path="/signup" element={<AuthLayout toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode}><BuyerSignupPage /></AuthLayout>} />
-        <Route path="/seller-signup" element={<AuthLayout toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode}><SellerSignupPage /></AuthLayout>} />
-
-        <Route path="/forgot-password" element={<AuthLayout toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode}><ForgotPasswordPage /></AuthLayout>} />
-        <Route path="/reset-password" element={<AuthLayout toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode}><ResetPasswordPage /></AuthLayout>} />
-        <Route path="/verify-otp" element={<AuthLayout toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode}><Verifyotp /></AuthLayout>} />
-        {/* ✅ Welcome Page Route - AFTER LOGIN */}
-        <Route path="/welcomepage" element={<WelcomePage />} />
-
-        {/* DASHBOARDS - Protected by logic within the component itself */}
+        {/* Seller Dashboard (Protected + Nested) */}
         <Route
-          path="/seller/dashboard/*"
+          path="/seller/dashboard"
           element={
             <PrivateRoute>
               <SellerDashboard toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
             </PrivateRoute>
           }
-        />
+        >
+          <Route index element={<SellerDashboardOverview toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
+          <Route path="overview" element={<SellerDashboardOverview toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
+          <Route path="products" element={<SellerDashboardProducts toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
+          <Route path="products/edit/:productId" element={<ProductForm toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} action="edit" />} />
+          <Route path="add-product" element={<ProductForm toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} action="add" />} />
+          <Route path="orders" element={<SellerDashboardOrders toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
+          <Route path="profile" element={<SellerDashboardProfile toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
+          <Route path="settings" element={<SellerDashboardSettings toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
+        </Route>
+
+        {/* User Dashboard (Buyer) */}
         <Route
-          path="/user/dashboard/"
+          path="/user-dashboard"
           element={
             <PrivateRoute>
               <UserDashboard toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
             </PrivateRoute>
           }
         />
-        {/* Nested routes within Seller Dashboard are handled inside SellerDashboard component */}
-        <Route  path="/seller/dashboard/orders" element={
-            <PrivateRoute>
-              <SellerDashboardOrders toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
-            </PrivateRoute>
-          }
-        />
-        <Route  path="/Seller/Dashboard/Products" element={
-            <PrivateRoute>
-              <SellerDashboardProducts toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
-            </PrivateRoute>
-          }
-        />
-        <Route  path="/Seller/Dashboard/Profile" element={
-            <PrivateRoute>
-              <SellerDashboardProfile toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
-            </PrivateRoute>
-          }
-        />
-        <Route  path="/Seller/Dashboard/Settings" element={
-            <PrivateRoute>
-              <SellerDashboardSettings toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
-            </PrivateRoute>
-          }
-        />
-        <Route  path="/Seller/Dashboard/Overview" element={
-            <PrivateRoute>
-              <SellerDashboardOverview toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
-            </PrivateRoute>
-          }
-        />
-        <Route  path="/seller/dashboard/add-product" element={
-            <PrivateRoute>
-              <ProductForm toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} action="add" />
-            </PrivateRoute>
-          }
-        />
-        <Route  path="/Seller/EditProduct/:productId" element={
-            <PrivateRoute>
-              <ProductForm toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} action="edit" />     
-            </PrivateRoute>
-          }
-        />
 
-        {/* The "/post" link from Navbar now directs to the seller dashboard add product section */}
-        {/* Note: If /post is outside seller dashboard, it might need additional auth/redirect logic */}
-        <Route path="/post" element={<SellerDashboard toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
+        {/* Shortcut: /post → seller add product */}
+        <Route path="/post" element={<ProductForm toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} action="add" />} />
 
-        {/* Catch-all for 404 Not Found */}
+        {/* 404 */}
         <Route path="*" element={<NotFoundPage toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />} />
       </Routes>
     </BrowserRouter>
   );
 };
 
-const App = () => {
-  return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <AppContent />
-      </PersistGate>
-    </Provider>
-  );
-};
+const App = () => (
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <AppContent />
+    </PersistGate>
+  </Provider>
+);
 
 export default App;

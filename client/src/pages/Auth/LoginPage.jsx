@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link, useNavigate } from "react-router-dom";
-import { Loader2, Eye, EyeOff } from 'lucide-react'; // 👈 Added icons
+import { Loader2, Eye, EyeOff } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 
 // Redux action
@@ -23,7 +23,7 @@ const loginUserApi = async (data) => {
 
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // 👈 New state
+  const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -31,30 +31,24 @@ const LoginPage = () => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await loginUserApi({
-        email: data.email,
-        password: data.password,
-      });
+      const response = await loginUserApi(data);
+      // if (!response.success) throw new Error(response.message || "Login failed");
 
-      if (!response.success) {
-        throw new Error(response.message || "Login failed");
-      }
+      // ✅ Correct payload shape for authSlice
+      dispatch(reduxLoginUser({
+        user: {
+          ...response.user,
+          accountType: response.user.accountType || "user", // fallback if backend didn’t send
+        },
+        token: response.token,
+      }));
 
-      // Save user in Redux
-      dispatch(reduxLoginUser(response.user));
 
-      toast.success("Login successful!", {
-        position: "top-right",
-        autoClose: 1000,
-        onClose: () => navigate("/User/dashboard"),
-      });
-
+      toast.success(response.message, { autoClose: 1000 });
+      navigate("/user-dashboard");
       reset();
     } catch (err) {
-      toast.error(err.message || "Login failed", {
-        position: "top-right",
-        autoClose: 3000,
-      });
+      toast.error(err.message || "Login failed", { autoClose: 3000 });
     } finally {
       setIsLoading(false);
     }
@@ -118,7 +112,7 @@ const LoginPage = () => {
                     required: "Password is required",
                     minLength: { value: 8, message: "Password must be at least 8 characters" },
                   })}
-                  className="block w-full py-2 mt-1 pr-10 transition-colors bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
+                  className="block w-full py-2 pr-10 mt-1 transition-colors bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
                 />
                 <button
                   type="button"

@@ -16,7 +16,7 @@ const SellerDashboardSettings = ({ isDarkMode, toggleDarkMode }) => {
         <button
           onClick={toggleDarkMode}
           className={`p-2 rounded-full transition-colors duration-200
-            ${isDarkMode ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-800'}
+            ${isDarkMode ? 'bg-blue-700 text-white' : 'bg-gray-300 text-gray-800'}
             hover:opacity-80 flex items-center justify-center
           `}
         >
@@ -44,7 +44,7 @@ const SellerDashboardSettings = ({ isDarkMode, toggleDarkMode }) => {
             <label htmlFor="language" className="font-medium">Language</label>
             <select
               id="language"
-              className={`p-2 rounded-md ${isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'} border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500`}
+              className={`p-2 rounded-md ${isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'} border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600`}
             >
               <option value="en">English</option>
               <option value="es">Spanish</option>
@@ -56,7 +56,7 @@ const SellerDashboardSettings = ({ isDarkMode, toggleDarkMode }) => {
 
       {/* Save Settings Button */}
       <button
-        className="px-6 py-3 mt-8 font-semibold text-white transition-colors duration-200 bg-orange-600 rounded-md shadow-md hover:bg-orange-700"
+        className="px-6 py-3 mt-8 font-semibold text-white transition-colors duration-200 bg-blue-700 rounded-md shadow-md hover:bg-blue-700"
         onClick={() => toast.success('Settings saved!')} // Placeholder action
       >
         Save Settings

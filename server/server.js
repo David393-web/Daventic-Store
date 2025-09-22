@@ -12,7 +12,7 @@ const productRouter = require("./router/productRouter");
 const app = express();
 
 app.use(cors({
-  origin: ["http://localhost:5173", "https://abcd1234.ngrok.io"],
+  origin: ["http://localhost:5173"],
   methods: "GET,POST,PUT,DELETE",
   credentials: true,
 }));
@@ -24,6 +24,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1", userRouter);
 app.use("/api/v1", profileRouter);
 app.use("/api/v1", productRouter);
+
+// Serve static files from uploads
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Serve frontend build in production
 if (process.env.NODE_ENV === "production") {

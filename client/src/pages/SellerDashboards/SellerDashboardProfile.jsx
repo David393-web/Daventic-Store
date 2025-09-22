@@ -243,7 +243,7 @@ const SellerDashboardProfile = ({ isDarkMode }) => {
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center justify-center px-5 py-2 text-white transition-colors duration-200 bg-orange-600 rounded-md hover:bg-orange-700"
+              className="flex items-center justify-center px-5 py-2 text-white transition-colors duration-200 bg-blue-700 rounded-md hover:bg-blue-700"
             >
               {loading ? (
                 <>

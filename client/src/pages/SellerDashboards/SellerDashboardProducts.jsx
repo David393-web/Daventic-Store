@@ -257,7 +257,7 @@
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center justify-center px-5 py-2 text-white transition-colors duration-200 bg-orange-600 rounded-md hover:bg-orange-700"
+              className="flex items-center justify-center px-5 py-2 text-white transition-colors duration-200 bg-blue-700 rounded-md hover:bg-blue-700"
             >
               {loading ? (
                 <>
@@ -302,7 +302,7 @@
           </h2>
           {loading ? (
             <div className="flex items-center justify-center h-48">
-              <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+              <Loader2 className="w-8 h-8 text-blue-700 animate-spin" />
             </div>
           ) : products.length === 0 ? (
             <p className="py-8 text-lg text-center">No products found. Add your first product!</p>

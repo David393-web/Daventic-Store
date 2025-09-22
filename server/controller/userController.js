@@ -97,7 +97,7 @@ const signUp = async (req, res, next) => {
       (error.message?.toLowerCase().includes("econnrefused") ||
         error.message?.toLowerCase().includes("failed to send"))
     ) {
-      await TempUser.deleteOne({ email: trimmedEmail }).catch(() => {});
+      await TempUser.deleteOne({ email: trimmedEmail }).catch(() => { });
     }
     next(error);
   }
@@ -127,7 +127,7 @@ const verifyOtp = async (req, res) => {
     const user = new User({
       username: tempUser.username,
       email: tempUser.email,
-      password: tempUser.password, // already hashed if you hashed it before saving TempUser
+      password: tempUser.password,
       accountType: tempUser.accountType,
       storeName: tempUser.storeName,
       craftCategories: tempUser.craftCategories,
@@ -139,25 +139,46 @@ const verifyOtp = async (req, res) => {
     // 🗑 Delete tempUser after successful verification
     await TempUser.deleteOne({ email });
 
-    // 🔑 Generate JWT
-    const token = jwt.sign(
-      { id: user._id, accountType: user.accountType },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES || "7d" }
-    );
+    // 🧩 Different flows for user vs seller
+    if (user.accountType === "seller") {
+      // Sellers must log in manually after verification
+      return res.status(200).json({
+        success: true,
+        message: "Seller account verified. Please log in.",
+        redirectTo: "/seller/login",
+      });
+    } else {
+      // Users get logged in immediately
+      const token = jwt.sign(
+        { id: user._id, accountType: user.accountType },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES || "7d" }
+      );
 
-    return res.status(200).json({
-      success: true,
-      message: "Account verified successfully",
-      token,
-      user: {
+      console.log("✅ Verified user:", {
         id: user._id,
         username: user.username,
-        email: user.email,
         accountType: user.accountType,
-        isVerified: user.isVerified,
-      },
-    });
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "User account verified successfully",
+        token,
+        redirectTo: "/user/dashboard",
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          accountType: user.accountType,
+          isVerified: user.isVerified,
+        },
+        redirectTo: user.accountType === "seller"
+          ? "/seller/login"
+          : "/user/dashboard"
+
+      });
+    }
   } catch (error) {
     console.error("Verify OTP Error:", error);
     return res.status(500).json({
@@ -167,6 +188,7 @@ const verifyOtp = async (req, res) => {
     });
   }
 };
+
 
 // ============ RESEND OTP ============
 const resendOtp = async (req, res, next) => {
@@ -417,18 +439,20 @@ const loginUser = async (req, res) => {
     );
 
     return res.status(200).json({
-      success: true,
-      message: "Login successful",
-      token,
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        accountType: user.accountType,
-        storeName: user.storeName,
-        craftCategories: user.craftCategories,
-      },
-    });
+  success: true,
+  message: "Login successful",
+  token,
+  user: {
+    id: user._id,
+    username: user.username,
+    email: user.email,
+    accountType: user.accountType,
+    isVerified: user.isVerified,
+  },
+  redirectTo: user.accountType === "seller"
+    ? "/seller/dashboard"
+    : "/user/dashboard"
+});
   } catch (error) {
     console.error("Login error:", error.message);
     return res.status(500).json({ success: false, message: "Server error", error: error.message });
@@ -445,8 +469,3 @@ module.exports = {
   loginUser,
 };
 
-// Debug test only
-const bcrypt = require("bcryptjs");
-const hash = "$2b$10$knOgm80woAlEEhX31yfJpeedrwfTxxj9wGZFFYsCG1e0NLLkswwE2";
-
-bcrypt.compare("Denyefa12@", hash).then(console.log);

@@ -4,7 +4,7 @@ import axios from "axios"; // Ensure axios is imported
 // Define your backend API base URL here.
 // This should be the root of your API, without specific endpoints like /products.
 // It must match your server.js base route (e.g., http://localhost:5000/api/v1)
-const API_BASE_URL = "https://mbayy-be.onrender.com/api/v1";
+const API_BASE_URL = "https://localhost:5000/api/v1";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,

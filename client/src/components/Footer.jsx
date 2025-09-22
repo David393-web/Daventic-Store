@@ -9,9 +9,9 @@ const Footer = () => {
         
         {/* About */}
         <div>
-          <h2 className="text-white font-bold text-lg mb-4">ShopMate</h2>
+          <h2 className="text-white font-bold text-lg mb-4">Daventic</h2>
           <p className="text-gray-400 text-sm">
-            Your one-stop shop for all your favorite products. Fast shipping, great deals, and 24/7 support.
+            Your one-stop shop for all things awesome. Discover, shop, and enjoy a seamless online shopping experience with us.
           </p>
         </div>
 
@@ -50,7 +50,7 @@ const Footer = () => {
       </div>
 
       <div className="border-t border-gray-700 py-4 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} ShopMate. All rights reserved.
+        © {new Date().getFullYear()} Daventic. All rights reserved.
       </div>
     </footer>
   );
